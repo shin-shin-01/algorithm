@@ -1,4 +1,3 @@
-## A017:落ちものシミュレーション
 import unittest
 import sys
 from io import StringIO

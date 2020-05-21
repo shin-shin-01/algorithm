@@ -1,5 +1,3 @@
-## A035:試験の作成 
-## テスト作成
 
 import unittest
 import sys
