@@ -1,47 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef int64_t ll;
-
-int main(){
-  ll n, m;
+ 
+int main() {
+  int n, m;
   cin >> n >> m;
   
-  vector<ll> a(m, 0);
-  for(ll i=0; i < m; i++) {
-    cin >> a.at(i);
+  // 0で初期化
+  vector<long long int> dp(n+1, 0);
+  vector<int> safe(n+1, true);
+ 
+  for(int i = 0; i < m; i++){ //壊れている段を記録
+    int a;
+    cin >> a;
+    safe.at(a) = false;
   }
-  
-  // 次にスキップする段数を保持
-  ll skip = 0;
-  if (m > 0) {
-    skip = a.at(0);
-  	a.erase(a.begin());
-  }
-  
-  // 2つ前まで累計を保持
-  vector<ll> tmp(2, 0);
-  // 0段目: 1通り
-  tmp.at(1) = 1;
-  
-  ll sum = 0;
-  // 1段目からn段目までを計算
-  for (ll i=0+1; i < n+1; i++){
-    if (i == skip) {
-      // たどり着けないので sum = 0;
-      sum = 0;
-      // 次のスキップ段を保持
-      if (a.size() > 0) {
-        skip = a.at(0);
-        a.erase(a.begin());
+ 
+  for(int i = 0; i <= n; i++){
+    if(safe.at(i)){
+      if(i == 0 or i == 1){
+        dp.at(i) = 1;
       }
-        
-    } else {
-    	sum = (tmp.at(0) + tmp.at(1)) % 1000000007;
+      else{
+        dp.at(i) = dp.at(i-2) + dp.at(i-1);
+        // オーバーフロー -> 先にあまり計算をしておく
+        dp.at(i) %= 1000000007;
+      }
     }
-    
-    tmp.at(0) = tmp.at(1);
-  	tmp.at(1) = sum;
   }
-  
-  cout << sum % 1000000007 << endl;
+  cout << dp.at(n) << endl;
 }
